@@ -1,0 +1,80 @@
+<!-- Área do Banner -->
+<div align="center" style="background-color: white; max-width: 100%;">
+  <img alt="BANNER com título: BOOTCAMP 1 - 2026" title="Banner_BOOTCAMP_1_2026" src=".github/img/Banner_BOOTCAMP_1_2026.png" width="100%" />
+</div>
+
+<!-- Título e breve descrição do repositório -->
+<div align="center"><h1>Trabalho de Big Data</h1><p><b>Arquivos de auxílio ao trabalho da matéria de Big Data, incluindo arquivo csv com os dados e um notebook Python para início do trabalho.</b></p></div>
+
+<!-- Ícones ou links das tecnologias usadas -->
+<p align="center">
+  <a href="https://hadoop.apache.org/" title="Hadoop"><img src="https://upload.wikimedia.org/wikipedia/commons/3/38/Hadoop_logo_new.svg" alt="Apache Hadoop" height="21px"></a>
+  +
+  <a href="https://www.python.org/" title="Python"><img src="https://github.com/get-icon/geticon/raw/master/icons/python.svg" alt="Python" width="21px" height="21px"></a>
+  +
+  <a href="https://spark.apache.org/" title="Spark"><img src="https://upload.wikimedia.org/wikipedia/commons/f/f3/Apache_Spark_logo.svg" alt="Apache Spark" height="21px"></a>
+  +
+  <a href="https://colab.research.google.com/" title="Google Colab"><img src="https://upload.wikimedia.org/wikipedia/commons/d/d0/Google_Colaboratory_SVG_Logo.svg" alt="Google Colab" height="21px"></a>
+</p>
+
+<!-- Escudos de licença e contador de contribuidores -->
+<p align="center">
+  <a href="https://github.com/N-CPUninter/Modelo_Aula/graphs/contributors">
+    <img src="https://img.shields.io/github/contributors/N-CPUninter/Modelo_Aula?color=%237159c1&logoColor=%237159c1&style=flat" alt="Contributors">
+  </a>
+  <a href="https://opensource.org/license/gpl-3-0">
+    <img src="https://img.shields.io/github/license/N-CPUninter/Modelo_Aula?color=%23BD0000" alt="License">
+  </a>
+</p>
+
+<!-- Descrição do repositório e demais dados -->
+## Descrição
+
+Este repositório contém alguns arquivos para auxílio na realização do trabalho prático da matéria de Big Data.
+
+Aqui você encontrará o arquivo dos dados em csv (`imdb-reviews-pt-br.csv`) e um notebook python com os códigos necessário para realização do trabalho pelo Google Colab.
+
+## Participantes
+
+| [<img src="https://avatars3.githubusercontent.com/u/60905310?s=460&v=4" width="75px;"/>](https://github.com/guipatriota) |
+| :------------------------------------------------------------------------------------------------------------------------: |
+
+| [Prof. Guilherme Patriota](https://github.com/guipatriota)
+
+# MedAlerta - Base de containers
+
+Este pacote prepara o projeto para subir com dois containers:
+- `app`: aplicação Java
+- `db`: MySQL
+
+## Pré-requisitos
+- Docker Desktop
+- VSCode
+
+## Como usar
+1. Copie `.env.example` para `.env`
+2. Ajuste as senhas
+3. Garanta que existe um `pom.xml` válido e uma aplicação Spring Boot no projeto
+4. Suba tudo com:
+
+```bash
+docker compose up --build
+```
+
+## Acessos
+- Aplicação: `http://localhost:8080`
+- Health (se implementado): `http://localhost:8080/actuator/health`
+- MySQL host: `localhost`
+- MySQL port: `3306`
+
+## MySQL Workbench
+Use os valores do arquivo `.env`:
+- Host: `127.0.0.1`
+- Port: `3306`
+- User: `MYSQL_USER`
+- Password: `MYSQL_PASSWORD`
+- Database: `MYSQL_DATABASE`
+
+## Observações
+- O nome do serviço do banco no Docker é `db`. A aplicação Java deve usar esse nome internamente.
+- Para produção real, prefira banco fora de container da aplicação e segredos em cofre de credenciais.
