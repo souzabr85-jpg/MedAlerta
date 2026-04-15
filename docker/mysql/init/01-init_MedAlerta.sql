@@ -1,5 +1,8 @@
-create database MedAlerta;
-use MedAlerta;
+ALTER DATABASE medalerta
+  CHARACTER SET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci;
+
+use medalerta;
 
 create table Usuario (
 	idUsuario int auto_increment not null,
