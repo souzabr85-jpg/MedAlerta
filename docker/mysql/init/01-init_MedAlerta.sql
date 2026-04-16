@@ -4,16 +4,6 @@ ALTER DATABASE medalerta
 
 use medalerta;
 
-create table HorarioMedicamento (
-	idHorarioMedicamento int auto_increment not null,
-	idUsuarioMedicamento int not null,
-	horario time not null,
-	frequenciaValor int not null,
-	frequenciaUnidade enum('horas', 'dias', 'semanas', 'meses') not null,
-	primary key (idHorarioMedicamento),
-	foreign key (idUsuarioMedicamento), references UsuarioMedicamento(idUsuarioMedicamento)
-);
-
 create table Usuario (
 	idUsuario int auto_increment not null,
 	nome varchar(100) not null,
@@ -46,10 +36,29 @@ CREATE TABLE Prescricao (
     dosagemValor INT NOT NULL,
 	dosagemUnidade VARCHAR(30) NOT NULL,
     frequenciaUso INT,
-	frequenciaTipo ENUM('horas', 'dias', 'semanas' 'dose única'),
+	frequenciaTipo ENUM('horas',
+	    'dias', 'semanas', 'dose única'),
     PRIMARY KEY (idPrescricao),
     FOREIGN KEY (idUsuario) REFERENCES Usuario(idUsuario),
     FOREIGN KEY (idMedicamento) REFERENCES Medicamento(idMedicamento)
+);
+
+create table HorarioMedicamento (
+    idHorarioMedicamento int auto_increment not null,
+    idPrescricao int not null,
+    horario time not null,
+    primary key (idHorarioMedicamento),
+    foreign key (idPrescricao) references Prescricao(idPrescricao)
+);
+
+CREATE TABLE Alerta(
+	idAlerta INT auto_increment NOT NULL,
+    idHorarioMedicamento INT NOT NULL,
+    tempoMinutos INT NOT NULL,
+    statusAlerta ENUM('emitido', 'pendente', 'confirmado'),
+    ativo BOOLEAN DEFAULT FALSE,
+    PRIMARY KEY (idAlerta),
+    FOREIGN KEY (idHorarioMedicamento) REFERENCES HorarioMedicamento(idHorarioMedicamento)
 );
 
 CREATE TABLE EstoqueMedicamento (
@@ -59,6 +68,27 @@ CREATE TABLE EstoqueMedicamento (
     quantidadeAtual INT NOT NULL,
     PRIMARY KEY (idEstoque),
     FOREIGN KEY (idPrescricao) REFERENCES Prescricao(idPrescricao)
+);
+
+CREATE TABLE Cuidador (
+    idCuidador INT NOT NULL AUTO_INCREMENT,
+    idUsuario INT NOT NULL,
+    nome VARCHAR(100) NOT NULL,
+    telefone VARCHAR(20) NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    enderecoRua VARCHAR(100) NOT NULL,
+    enderecoNumero INT NOT NULL,
+    enderecoComplemento VARCHAR(50),
+    enderecoBairro VARCHAR(50) NOT NULL,
+    enderecoCep VARCHAR(10) NOT NULL,
+    enderecoCidade VARCHAR(50) NOT NULL,
+    enderecoEstado CHAR(2) NOT NULL,
+    PRIMARY KEY (idCuidador),
+    CONSTRAINT fk_Usuario
+      FOREIGN KEY (idUsuario)
+          REFERENCES Usuario (idUsuario)
+          ON DELETE CASCADE
+          ON UPDATE CASCADE
 );
 
 
