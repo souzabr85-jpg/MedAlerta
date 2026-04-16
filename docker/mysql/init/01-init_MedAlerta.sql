@@ -15,8 +15,8 @@ create table HorarioMedicamento (
 );
 
 create table Usuario (
-	  idUsuario int auto_increment not null,
-	  nome varchar(100) not null,
+	idUsuario int auto_increment not null,
+	nome varchar(100) not null,
     telefone varchar(20) not null,
     email varchar(100) not null,
     enderecoRua varchar(100),
@@ -30,7 +30,7 @@ create table Usuario (
 );
 
 create table Medicamento (
-	  idMedicamento int auto_increment not null,
+	idMedicamento int auto_increment not null,
     nomeComercial varchar(100) not null,
     nomeGenerico varchar(100),
     quantidade enum('unidade', 'ml'),
@@ -39,22 +39,14 @@ create table Medicamento (
     primary key (idMedicamento)
 );
 
-CREATE TABLE UsuarioMedicamento (
-    idUsuarioMedicamento INT AUTO_INCREMENT NOT NULL,
-    idUsuario INT NOT NULL,
-    idMedicamento INT NOT NULL,
-    PRIMARY KEY (idUsuarioMedicamento),
-    FOREIGN KEY (idUsuario) REFERENCES Usuario (idUsuario),
-    FOREIGN KEY (idMedicamento) REFERENCES Medicamento (idMedicamento),
-	  UNIQUE (idUsuario, idMedicamento)
-);
-
 CREATE TABLE Prescricao (
     idPrescricao INT AUTO_INCREMENT NOT NULL,
     idUsuario INT NOT NULL,
     idMedicamento INT NOT NULL,
-    dosagem VARCHAR(50) NOT NULL,
-    frequenciaUso VARCHAR(50),
+    dosagemValor INT NOT NULL,
+	dosagemUnidade VARCHAR(30) NOT NULL,
+    frequenciaUso INT,
+	frequenciaTipo ENUM('horas', 'dias', 'semanas' 'dose única'),
     PRIMARY KEY (idPrescricao),
     FOREIGN KEY (idUsuario) REFERENCES Usuario(idUsuario),
     FOREIGN KEY (idMedicamento) REFERENCES Medicamento(idMedicamento)
@@ -69,26 +61,6 @@ CREATE TABLE EstoqueMedicamento (
     FOREIGN KEY (idPrescricao) REFERENCES Prescricao(idPrescricao)
 );
 
-CREATE TABLE Cuidador (
-	  idCuidador INT NOT NULL AUTO_INCREMENT,
-	  idUsuario INT NOT NULL,
-    nome VARCHAR(100) NOT NULL,
-    telefone VARCHAR(20) NOT NULL,
-    email VARCHAR(100) NOT NULL UNIQUE,
-    enderecoRua VARCHAR(100) NOT NULL,
-    enderecoNumero INT NOT NULL,
-    enderecoComplemento VARCHAR(50),
-    enderecoBairro VARCHAR(50) NOT NULL,
-    enderecoCep VARCHAR(10) NOT NULL,
-    enderecoCidade VARCHAR(50) NOT NULL,
-    enderecoEstado CHAR(2) NOT NULL,
-    PRIMARY KEY (idCuidador),
-    CONSTRAINT fk_Usuario
-    FOREIGN KEY (idUsuario)
-    REFERENCES Usuario (idUsuario)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE
-);
 
 # insert into Usuario (nome, telefone, email, enderecoRua, enderecoNumero, enderecoComplemento, enderecoBairro, enderecoCEP, enderecoCidade, enderecoEstado) values
 # 	('Ana Souza', '41999990001', 'ana.souza@email.com', 'Rua A', 10, null, 'Centro', '80000-001', 'Curitiba', 'PR'),
