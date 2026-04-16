@@ -64,6 +64,26 @@ CREATE TABLE EstoqueMedicamento (
     FOREIGN KEY (idPrescricao) REFERENCES Prescricao(idPrescricao)
 );
 
+CREATE TABLE Cuidador (
+	idTerceiros INT NOT NULL AUTO_INCREMENT,
+    nome VARCHAR(100) NOT NULL,
+    telefone VARCHAR(20) NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    enderecoRua VARCHAR(100) NOT NULL,
+    enderecoNumero INT NOT NULL,
+    enderecoComplemento VARCHAR(50),
+    enderecoBairro VARCHAR(50) NOT NULL,
+    enderecoCep VARCHAR(10) NOT NULL,
+    enderecoCidade VARCHAR(50) NOT NULL,
+    enderecoEstado CHAR(2) NOT NULL,
+    idUsuario INT NOT NULL,
+    PRIMARY KEY (idTerceiros),
+    CONSTRAINT fk_Usuario
+        FOREIGN KEY (idUsuario)
+        REFERENCES Usuario (idUsuario)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+);
 
 insert into Usuario (nome, telefone, email, enderecoRua, enderecoNumero, enderecoComplemento, enderecoBairro, enderecoCEP, enderecoCidade, enderecoEstado) values
 	('Ana Souza', '41999990001', 'ana.souza@email.com', 'Rua A', 10, null, 'Centro', '80000-001', 'Curitiba', 'PR'),
@@ -145,7 +165,20 @@ VALUES
 	(12, 30, 29),  
 	(13, 30, 29),  
 	(14, 14, 13),  
-	(15, 10, 9);   
+	(15, 10, 9); 
+
+INSERT INTO Cuidador (idUsuario, nome, telefone, email, enderecoRua, enderecoNumero, enderecoComplemento, enderecoBairro, enderecoCEP, enderecoCidade, enderecoEstado) VALUES
+	('Lucas Fernandes', '41999990011', 'lucas.fernandes@email.com', 'Rua K', 110, 'Sala 4', 'Prado Velho', '80000-011', 'Curitiba', 'PR', 1),
+    ('Mariana Ribeiro', '41999990012', 'mariana.ribeiro@email.com', 'Rua L', 120, null, 'Tarumã', '80000-012', 'Curitiba', 'PR', 2),
+    ('Nicolas Silva', '41999990013', 'nicolas.silva@email.com', 'Rua M', 130, 'Sobrado', 'Cristo Rei', '80000-013', 'Curitiba', 'PR', 1),
+    ('Olivia Castro', '41999990014', 'olivia.castro@email.com', 'Rua N', 140, null, 'Juvevê', '80000-014', 'Curitiba', 'PR', 2),
+    ('Paulo Gomes', '41999990015', 'paulo.gomes@email.com', 'Rua O', 150, 'Apto 303', 'Ahú', '80000-015', 'Curitiba', 'PR', 1),
+    ('Quintino Lima', '41999990016', 'quintino.lima@email.com', 'Rua P', 160, null, 'Boa Vista', '80000-016', 'Curitiba', 'PR', 2),
+    ('Rafaela Vieira', '41999990017', 'rafaela.vieira@email.com', 'Rua Q', 170, 'Bloco B', 'Santa Felicidade', '80000-017', 'Curitiba', 'PR', 1),
+    ('Samuel Dias', '41999990018', 'samuel.dias@email.com', 'Rua R', 180, null, 'Campina do Siqueira', '80000-018', 'Curitiba', 'PR', 2),
+    ('Tatiana Moraes', '41999990019', 'tatiana.moraes@email.com', 'Rua S', 190, 'Casa 2', 'Seminário', '80000-019', 'Curitiba', 'PR', 1),
+    ('Ulisses Carvalho', '41999990020', 'ulisses.carvalho@email.com', 'Rua T', 200, null, 'Mercês', '80000-020', 'Curitiba', 'PR', 2);
+select * from Cuidador; 
 
 /* Listar todos os usuários, inclusive os que não utilizam nenhum medicamento. */
 select Usuario.nome as 'Usuário'
@@ -164,11 +197,11 @@ where Usuario.idUsuario = UsuarioMedicamento.idUsuario and
 	Medicamento.idMedicamento = UsuarioMedicamento.idMedicamento and
 	Usuario.nome = 'Ana Souza';
 
-/* Listar os usuários que não confirmaram o consumo do medicamento. */
-select Usuario.nome as 'Usuário', Medicamento.nomeComercial as 'Medicamento', UsuarioMedicamento.confirmacaoConsumo as 'Confirmação'
-from Usuario, Medicamento, UsuarioMedicamento
+/* Listar os usuários que não confirmaram o consumo do medicamento e notificar os terceiros. */
+select Usuario.nome as 'Usuário', Medicamento.nomeComercial as 'Medicamento', UsuarioMedicamento.confirmacaoConsumo as 'Confirmação', Cuidador.nome as 'Cuidador', Cuidador.email as 'Contato'
+from Usuario, Medicamento, UsuarioMedicamento, Cuidador
 where Usuario.idUsuario = UsuarioMedicamento.idUsuario and
-	Medicamento.idMedicamento = UsuarioMedicamento.idMedicamento and
+	Medicamento.idMedicamento = UsuarioMedicamento.idMedicamento and Cuidador.idUsuario = Usuario.idUsuario and 
 	UsuarioMedicamento.confirmacaoConsumo = 'não';
 
 /* Listar os alertas já emitidos. */
