@@ -23,7 +23,7 @@ create table Medicamento (
 	idMedicamento int auto_increment not null,
     nomeComercial varchar(100) not null,
     nomeGenerico varchar(100),
-    quantidade enum('unidade', 'ml'),
+    quantidade enum('UNIDADE', 'ML'),
     formaUso varchar(100),
     observacao varchar(200),
     primary key (idMedicamento)
@@ -55,7 +55,7 @@ CREATE TABLE Alerta(
 	idAlerta INT auto_increment NOT NULL,
     idHorarioMedicamento INT NOT NULL,
     tempoMinutos INT NOT NULL,
-    statusAlerta ENUM('emitido', 'pendente', 'confirmado'),
+    statusAlerta ENUM('EMITIDO', 'PENDENTE', 'CONFIRMADO'),
     ativo BOOLEAN DEFAULT FALSE,
     PRIMARY KEY (idAlerta),
     FOREIGN KEY (idHorarioMedicamento) REFERENCES HorarioMedicamento(idHorarioMedicamento)
