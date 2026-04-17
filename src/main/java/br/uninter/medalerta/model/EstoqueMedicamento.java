@@ -83,7 +83,6 @@ public class EstoqueMedicamento {
     public String toString() {
         return "EstoqueMedicamento{" +
                 "idEstoque=" + idEstoque +
-                ", prescricao=" + (prescricao != null ? prescricao.getIdPrescricao() : null) +
                 ", quantidadeTotal=" + quantidadeTotal +
                 ", quantidadeAtual=" + quantidadeAtual +
                 '}';
