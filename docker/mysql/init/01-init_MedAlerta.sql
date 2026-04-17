@@ -100,150 +100,97 @@ CREATE TABLE Cuidador (
           ON UPDATE CASCADE
 );
 
+INSERT INTO Usuario (nome, telefone, email, enderecoRua, enderecoNumero, enderecoComplemento, enderecoBairro, enderecoCEP, enderecoCidade, enderecoEstado) VALUES
+('João Silva', '(11) 98765-4321', 'joao.silva@email.com', 'Rua das Flores', 123, 'Apto 101', 'Centro', '01234-567', 'São Paulo', 'SP'),
+('Maria Santos', '(21) 91234-5678', 'maria.santos@email.com', 'Avenida Principal', 456, NULL, 'Botafogo', '23456-789', 'Rio de Janeiro', 'RJ'),
+('Pedro Oliveira', '(31) 99876-5432', 'pedro.oliveira@email.com', 'Rua Verde', 789, 'Casa 2', 'Savassi', '34567-890', 'Belo Horizonte', 'MG'),
+('Ana Costa', '(41) 97654-3210', 'ana.costa@email.com', 'Alameda das Árvores', 321, 'Bloco B', 'Batel', '45678-901', 'Curitiba', 'PR'),
+('Carlos Ferreira', '(51) 96543-2109', 'carlos.ferreira@email.com', 'Rua do Porto', 654, NULL, 'Centro Histórico', '56789-012', 'Porto Alegre', 'RS');
 
-# insert into Usuario (nome, telefone, email, enderecoRua, enderecoNumero, enderecoComplemento, enderecoBairro, enderecoCEP, enderecoCidade, enderecoEstado) values
-# 	('Ana Souza', '41999990001', 'ana.souza@email.com', 'Rua A', 10, null, 'Centro', '80000-001', 'Curitiba', 'PR'),
-# 	('Bruno Lima', '41999990002', 'bruno.lima@email.com', 'Rua B', 20, 'Casa', 'Batel', '80000-002', 'Curitiba', 'PR'),
-# 	('Carla Mendes', '41999990003', 'carla.mendes@email.com', 'Rua C', 30, null, 'Água Verde', '80000-003', 'Curitiba', 'PR'),
-# 	('Daniel Rocha', '41999990004', 'daniel.rocha@email.com', 'Rua D', 40, 'Apto 101', 'Portão', '80000-004', 'Curitiba', 'PR'),
-# 	('Elisa Torres', '41999990005', 'elisa.torres@email.com', 'Rua E', 50, null, 'Santa Quitéria', '80000-005', 'Curitiba', 'PR'),
-# 	('Felipe Alves', '41999990006', 'felipe.alves@email.com', 'Rua F', 60, null, 'Cabral', '80000-006', 'Curitiba', 'PR'),
-# 	('Gabriela Nunes', '41999990007', 'gabriela.nunes@email.com', 'Rua G', 70, 'Fundos', 'Boqueirão', '80000-007', 'Curitiba', 'PR'),
-# 	('Henrique Pires', '41999990008', 'henrique.pires@email.com', 'Rua H', 80, null, 'Xaxim', '80000-008', 'Curitiba', 'PR'),
-# 	('Isabela Costa', '41999990009', 'isabela.costa@email.com', 'Rua I', 90, 'Apto 202', 'Rebouças', '80000-009', 'Curitiba', 'PR'),
-# 	('João Martins', '41999990010', 'joao.martins@email.com', 'Rua J', 100, null, 'Centro Cívico', '80000-010', 'Curitiba', 'PR');
-# select * from Usuario;
-#
-# insert into Medicamento (nomeComercial, nomeGenerico, quantidade, formaUso, observacao) values
-# 	('Tylenol', 'Paracetamol', 'unidade', 'Via oral', 'Não exceder a dose'),
-# 	('Advil', 'Ibuprofeno', 'unidade', 'Via oral', 'Tomar após refeições'),
-# 	('Amoxil', 'Amoxicilina', 'ml', 'Via oral', 'Agitar antes de usar'),
-# 	('Dipirona', 'Dipirona Sódica', 'unidade', 'Via oral', null),
-# 	('Buscopan', 'Butilbrometo', 'unidade', 'Via oral', 'Uso em dor abdominal'),
-# 	('Novalgina', 'Dipirona', 'ml', 'Via oral', null),
-# 	('Atenol', 'Atenolol', 'unidade', 'Via oral', 'Controle da pressão'),
-# 	('Losartana', 'Losartana Potássica', 'unidade', 'Via oral', null),
-# 	('Vick', 'Camphora', 'ml', 'Uso tópico', 'Não ingerir'),
-# 	('Cataflam', 'Diclofenaco', 'unidade', 'Via oral', 'Uso com cautela');
-# select * from Medicamento;
-#
-# insert into UsuarioMedicamento (idUsuario, idMedicamento, horarioUso, frequenciaUso, dosagem, dataHorarioAlerta, statusAlerta, dataHorarioConsumo,
-# 	confirmacaoConsumo) values
-# 	(1, 1, '08:00:00', '8 em 8 horas', '1 comprimido', '2026-04-15 07:55:00', 'emitido', '2026-04-15 08:05:00', 'sim'),
-# 	(1, 2, '20:00:00', '1 vez ao dia', '1 comprimido', '2026-04-15 19:55:00', 'emitido', '2026-04-15 20:10:00', 'sim'),
-# 	(2, 3, '09:00:00', '12 em 12 horas', '10 ml', '2026-04-15 08:55:00', 'não emitido', null, 'não'),
-# 	(2, 4, '18:00:00', '1 vez ao dia', '1 comprimido', '2026-04-15 17:55:00', 'emitido', '2026-04-15 18:03:00', 'sim'),
-# 	(3, 5, '07:00:00', '8 em 8 horas', '1 comprimido', '2026-04-15 06:55:00', 'emitido', '2026-04-15 07:05:00', 'sim'),
-# 	(3, 6, '22:00:00', '1 vez ao dia', '15 ml', '2026-04-15 21:55:00', 'não emitido', null, 'não'),
-# 	(4, 7, '08:00:00', '1 vez ao dia', '1 comprimido', '2026-04-15 07:55:00', 'emitido', '2026-04-15 08:00:00', 'sim'),
-# 	(4, 8, '20:00:00', '1 vez ao dia', '1 comprimido', '2026-04-15 19:55:00', 'emitido', '2026-04-15 20:02:00', 'sim'),
-# 	(5, 9, '12:00:00', '2 vezes ao dia', '5 ml', '2026-04-15 11:55:00', 'emitido', '2026-04-15 12:06:00', 'sim'),
-# 	(6, 10, '19:00:00', '1 vez ao dia', '1 comprimido', '2026-04-15 18:55:00', 'não emitido', null, 'não'),
-# 	(7, 1, '08:00:00', '1 vez ao dia', '1 comprimido', '2026-04-15 07:55:00', 'emitido', '2026-04-15 08:01:00', 'sim'),
-# 	(8, 2, '21:00:00', '1 vez ao dia', '1 comprimido', '2026-04-15 20:55:00', 'emitido', '2026-04-15 21:10:00', 'sim'),
-# 	(9, 3, '10:00:00', '12 em 12 horas', '10 ml', '2026-04-15 09:55:00', 'não emitido', null, 'não'),
-# 	(10, 4, '18:30:00', '1 vez ao dia', '1 comprimido', '2026-04-15 18:25:00', 'emitido', '2026-04-15 18:40:00', 'sim'),
-# 	(10, 5, '22:00:00', '1 vez ao dia', '1 comprimido', '2026-04-15 21:55:00', 'emitido', '2026-04-15 22:05:00', 'sim');
-# select * from UsuarioMedicamento;
-#
-# INSERT INTO Prescricao (idUsuario, idMedicamento, dosagem, frequenciaUso)
-# VALUES
-#   	(1, 1, '1 comprimido', 'A cada 8 horas'),
-# 	(1, 4, '1 comprimido', '1 vez ao dia'),
-# 	(2, 2, '40 gotas', 'A cada 6 horas'),
-# 	(3, 3, '1 cápsula', 'A cada 12 horas'),
-# 	(4, 5, '1 comprimido', 'Após o almoço'),
-# 	(4, 7, '1 cápsula', 'Em jejum'),
-# 	(5, 6, '2 gotas', 'Antes de dormir'),
-# 	(6, 8, '1 comprimido', '1 vez ao dia'),
-# 	(7, 9, '1 cápsula', 'Se houver dor'),
-# 	(8, 10, '15 ml', 'A cada 8 horas'),
-# 	(9, 4, '1 comprimido', '1 vez ao dia'),
-# 	(10, 1, '1 comprimido', 'A cada 8 horas'),
-# 	(2, 5, '1 comprimido', 'Após o almoço'),
-# 	(3, 7, '1 cápsula', 'Em jejum'),
-# 	(5, 8, '1 comprimido', '1 vez ao dia');
-#
-#
-# INSERT INTO EstoqueMedicamento (idPrescricao, quantidadeTotal, quantidadeAtual)
-# VALUES
-# 	(1, 30, 29),
-# 	(2, 30, 29),
-# 	(3, 600, 560),
-# 	(4, 14, 14),
-# 	(5, 30, 29),
-# 	(6, 30, 29),
-# 	(7, 300, 300),
-# 	(8, 10, 10),
-# 	(9, 20, 19),
-# 	(10, 150, 135),
-# 	(11, 30, 30),
-# 	(12, 30, 29),
-# 	(13, 30, 29),
-# 	(14, 14, 13),
-# 	(15, 10, 9);
-#
-# /* Listar todos os usuários, inclusive os que não utilizam nenhum medicamento. */
-# select Usuario.nome as 'Usuário'
-# from Usuario;
-#
-# /* Listar os usuários e os medicamentos que os mesmos utilizam. */
-# select Usuario.nome as 'Usuário', Medicamento.nomeComercial as 'Medicamento'
-# from Usuario, Medicamento, UsuarioMedicamento
-# where Usuario.idUsuario = UsuarioMedicamento.idUsuario and
-# 	Medicamento.idMedicamento = UsuarioMedicamento.idMedicamento;
-#
-# /* Listar os medicamentos utilizados por um usuário específico. */
-# select Usuario.nome as 'Usuário', Medicamento.nomeComercial as 'Medicamento', UsuarioMedicamento.dosagem as 'Dosagem'
-# from Usuario, Medicamento, UsuarioMedicamento
-# where Usuario.idUsuario = UsuarioMedicamento.idUsuario and
-# 	Medicamento.idMedicamento = UsuarioMedicamento.idMedicamento and
-# 	Usuario.nome = 'Ana Souza';
-#
-# /* Listar os usuários que não confirmaram o consumo do medicamento. */
-# select Usuario.nome as 'Usuário', Medicamento.nomeComercial as 'Medicamento', UsuarioMedicamento.confirmacaoConsumo as 'Confirmação'
-# from Usuario, Medicamento, UsuarioMedicamento
-# where Usuario.idUsuario = UsuarioMedicamento.idUsuario and
-# 	Medicamento.idMedicamento = UsuarioMedicamento.idMedicamento and
-# 	UsuarioMedicamento.confirmacaoConsumo = 'não';
-#
-# /* Listar os alertas já emitidos. */
-# select Usuario.nome as 'Usuário', Medicamento.nomeComercial as 'Medicamento', UsuarioMedicamento.dataHorarioAlerta as 'Alerta'
-# from Usuario, Medicamento, UsuarioMedicamento
-# where Usuario.idUsuario = UsuarioMedicamento.idUsuario and
-# 	Medicamento.idMedicamento = UsuarioMedicamento.idMedicamento and
-# 	UsuarioMedicamento.statusAlerta = 'emitido';
-#
-# /* Listar a quantidade de medicamentos por usuário. */
-# select U.nome as 'Usuário', count(UM.idMedicamento) as 'Total Medicamento'
-# from Usuario U
-# left join UsuarioMedicamento UM on U.idUsuario = UM.idUsuario
-# group by U.idUsuario;
-#
-# /* Listar a quantidade de usuários por medicamento. */
-# select M.nomeComercial as 'Medicamento', count(UM.idUsuario) as 'Total Usuário'
-# from Medicamento M
-# left join UsuarioMedicamento UM on M.idMedicamento = UM.idMedicamento
-# group by M.idMedicamento;
-#
-# /* Listar os usuários que consumiram medicamento em determinada data. */
-# select U.nome as 'Usuário', M.nomeComercial as 'Medicamento', UM.dataHorarioConsumo as 'Consumo'
-# from Usuario U
-# join UsuarioMedicamento UM on U.idUsuario = UM.idUsuario
-# join Medicamento M on M.idMedicamento = UM.idMedicamento
-# where date(UM.dataHorarioConsumo) = '2026-04-15';
-#
-# /* Listar a quantidade de alertas não emitidos por usuário. */
-# select U.nome as 'Usuário', count(*) as 'Alertas não emitidos'
-# from Usuario U
-# join UsuarioMedicamento UM on U.idUsuario = UM.idUsuario
-# where UM.statusAlerta = 'não emitido'
-# group by U.idUsuario;
-#
-# /* Listar um resumo geral do uso de medicamentos. */
-# select U.nome as 'Usuário', M.nomeComercial as 'Medicamento', UM.horarioUso as 'Horário de uso',
-# 	UM.frequenciaUso as 'Frequência de uso', UM.confirmacaoConsumo as 'Confirmação de consumo'
-# from Usuario U
-# join UsuarioMedicamento UM on U.idUsuario = UM.idUsuario
-# join Medicamento M ON M.idMedicamento = UM.idMedicamento
-# order by U.nome, UM.horarioUso;
+INSERT INTO Medicamento (nomeComercial, nomeGenerico, quantidade, formaUso, observacao) VALUES
+('Dipirona', 'Dipirona Sódica', 'ml', 'Gotas', 'Analgésico e antitérmico'),
+('Paracetamol', 'Paracetamol', 'unidade', 'Comprimido', 'Analgésico e antitérmico'),
+('Amoxicilina', 'Amoxicilina', 'unidade', 'Cápsula', 'Antibiótico'),
+('Losartana', 'Losartana Potássica', 'unidade', 'Comprimido', 'Anti-hipertensivo'),
+('Omeprazol', 'Omeprazol', 'unidade', 'Cápsula', 'Redutor de acidez estomacal'),
+('Ibuprofeno', 'Ibuprofeno', 'unidade', 'Comprimido', 'Anti-inflamatório'),
+('Diazepam', 'Diazepam', 'unidade', 'Comprimido', 'Ansiolítico'),
+('Salbutamol', 'Salbutamol', 'ml', 'Spray', 'Broncodilatador'),
+('Metformina', 'Metformina', 'unidade', 'Comprimido', 'Antidiabético'),
+('Atorvastatina', 'Atorvastatina', 'unidade', 'Comprimido', 'Redutor de colesterol');
+
+INSERT INTO Prescricao (idUsuario, idMedicamento, dosagemValor, dosagemUnidade, frequenciaUso, frequenciaTipo) VALUES
+(1, 1, 10, 'ml', 8, 'horas'),          -- João - Dipirona 10ml a cada 8 horas
+(1, 2, 500, 'mg', 6, 'horas'),          -- João - Paracetamol 500mg a cada 6 horas
+(2, 3, 500, 'mg', 8, 'horas'),          -- Maria - Amoxicilina 500mg a cada 8 horas
+(2, 5, 20, 'mg', 1, 'dias'),            -- Maria - Omeprazol 20mg 1 vez por dia
+(3, 4, 50, 'mg', 12, 'horas'),          -- Pedro - Losartana 50mg a cada 12 horas
+(3, 6, 400, 'mg', 8, 'horas'),          -- Pedro - Ibuprofeno 400mg a cada 8 horas
+(4, 7, 5, 'mg', 1, 'dias'),             -- Ana - Diazepam 5mg 1 vez por dia
+(4, 8, 2, 'mg', NULL, 'dose única'), -- Ana - Salbutamol dose única
+(5, 9, 850, 'mg', 12, 'horas'),          -- Carlos - Metformina 850mg a cada 12 horas
+(5, 10, 20, 'mg', 1, 'dias');           -- Carlos - Atorvastatina 20mg 1 vez por dia
+
+INSERT INTO HorarioMedicamento (idPrescricao, horario) VALUES
+(1, '08:00:00'),  -- João - Dipirona 8h
+(1, '16:00:00'),  -- João - Dipirona 16h
+(1, '00:00:00'),  -- João - Dipirona 24h
+(2, '08:00:00'),  -- João - Paracetamol 8h
+(2, '14:00:00'),  -- João - Paracetamol 14h
+(2, '20:00:00'),  -- João - Paracetamol 20h
+(2, '02:00:00'),  -- João - Paracetamol 2h
+(3, '08:00:00'),  -- Maria - Amoxicilina 8h
+(3, '16:00:00'),  -- Maria - Amoxicilina 16h
+(3, '00:00:00'),  -- Maria - Amoxicilina 24h
+(4, '07:00:00'),  -- Maria - Omeprazol 7h
+(5, '08:00:00'),  -- Pedro - Losartana 8h
+(5, '20:00:00'),  -- Pedro - Losartana 20h
+(6, '09:00:00'),  -- Pedro - Ibuprofeno 9h
+(6, '17:00:00'),  -- Pedro - Ibuprofeno 17h
+(6, '01:00:00'),  -- Pedro - Ibuprofeno 1h
+(7, '22:00:00'),  -- Ana - Diazepam 22h
+(8, '12:00:00'),  -- Ana - Salbutamol 12h
+(9, '08:00:00'),  -- Carlos - Metformina 8h
+(9, '20:00:00'),  -- Carlos - Metformina 20h
+(10, '21:00:00'); -- Carlos - Atorvastatina 21h
+
+INSERT INTO Alerta (idHorarioMedicamento, tempoMinutos, statusAlerta, ativo) VALUES
+(1, 15, 'pendente', TRUE),   -- João - Dipirona 8h, alerta 15min antes
+(2, 15, 'pendente', TRUE),   -- João - Dipirona 16h, alerta 15min antes
+(3, 15, 'pendente', TRUE),   -- João - Dipirona 24h, alerta 15min antes
+(4, 10, 'pendente', TRUE),   -- João - Paracetamol 8h, alerta 10min antes
+(5, 10, 'pendente', TRUE),   -- João - Paracetamol 14h, alerta 10min antes
+(6, 10, 'pendente', TRUE),   -- João - Paracetamol 20h, alerta 10min antes
+(7, 10, 'pendente', TRUE),   -- João - Paracetamol 2h, alerta 10min antes
+(8, 20, 'pendente', TRUE),   -- Maria - Amoxicilina 8h, alerta 20min antes
+(9, 20, 'pendente', TRUE),   -- Maria - Amoxicilina 16h, alerta 20min antes
+(10, 20, 'pendente', TRUE),  -- Maria - Amoxicilina 24h, alerta 20min antes
+(11, 30, 'pendente', TRUE),  -- Maria - Omeprazol 7h, alerta 30min antes
+(12, 15, 'pendente', TRUE),  -- Pedro - Losartana 8h, alerta 15min antes
+(13, 15, 'pendente', TRUE),  -- Pedro - Losartana 20h, alerta 15min antes
+(14, 10, 'pendente', TRUE),  -- Pedro - Ibuprofeno 9h, alerta 10min antes
+(15, 10, 'pendente', TRUE),  -- Pedro - Ibuprofeno 17h, alerta 10min antes
+(16, 10, 'pendente', TRUE),  -- Pedro - Ibuprofeno 1h, alerta 10min antes
+(17, 30, 'pendente', TRUE),  -- Ana - Diazepam 22h, alerta 30min antes
+(18, 5, 'pendente', TRUE),   -- Ana - Salbutamol 12h, alerta 5min antes
+(19, 15, 'pendente', TRUE),  -- Carlos - Metformina 8h, alerta 15min antes
+(20, 15, 'pendente', TRUE),  -- Carlos - Metformina 20h, alerta 15min antes
+(21, 30, 'pendente', TRUE);  -- Carlos - Atorvastatina 21h, alerta 30min antes
+
+INSERT INTO EstoqueMedicamento (idPrescricao, quantidadeTotal, quantidadeAtual) VALUES
+(1, 30, 25),   -- João - Dipirona: 30ml total, 25ml disponível
+(2, 20, 18),   -- João - Paracetamol: 20 comp total, 18 comp disponível
+(3, 24, 20),   -- Maria - Amoxicilina: 24 comp total, 20 comp disponível
+(4, 30, 28),   -- Maria - Omeprazol: 30 comp total, 28 comp disponível
+(5, 60, 55),   -- Pedro - Losartana: 60 comp total, 55 comp disponível
+(6, 21, 15),   -- Pedro - Ibuprofeno: 21 comp total, 15 comp disponível
+(7, 10, 8),    -- Ana - Diazepam: 10 comp total, 8 comp disponível
+(8, 1, 1),     -- Ana - Salbutamol: 1 spray total, 1 spray disponível
+(9, 60, 50),   -- Carlos - Metformina: 60 comp total, 50 comp disponível
+(10, 30, 25);  -- Carlos - Atorvastatina: 30 comp total, 25 comp disponível
+
+INSERT INTO Cuidador (idUsuario, nome, telefone, email, enderecoRua, enderecoNumero, enderecoComplemento, enderecoBairro, enderecoCEP, enderecoCidade, enderecoEstado) VALUES
+(1, 'Dona Francisca', '(11) 98888-7777', 'francisca.cuidadora@email.com', 'Rua das Flores', 123, 'Apto 102', 'Centro', '01234-567', 'São Paulo', 'SP'),
+(2, 'Seu José', '(21) 97777-6666', 'jose.cuidador@email.com', 'Avenida Principal', 456, 'Apto 201', 'Botafogo', '23456-789', 'Rio de Janeiro', 'RJ'),
+(3, 'Dona Maria', '(31) 96666-5555', 'maria.cuidadora@email.com', 'Rua Verde', 789, 'Casa 1', 'Savassi', '34567-890', 'Belo Horizonte', 'MG');
+
