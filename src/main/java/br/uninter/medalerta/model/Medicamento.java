@@ -30,7 +30,7 @@ public class Medicamento {
     private String observacao;
 
     @OneToMany(mappedBy = "medicamento", cascade = CascadeType.ALL, orphanRemoval = false)
-    private List<UsuarioMedicamento> usuarioMedicamentos = new ArrayList<>();
+    private List<Prescricao> prescricoes = new ArrayList<>();
 
     public Medicamento() {
     }
@@ -83,12 +83,12 @@ public class Medicamento {
         this.observacao = observacao;
     }
 
-    public List<UsuarioMedicamento> getUsuarioMedicamentos() {
-        return usuarioMedicamentos;
+    public List<Prescricao> getPrescricoes() {
+        return prescricoes;
     }
 
-    public void setUsuarioMedicamentos(List<UsuarioMedicamento> usuarioMedicamentos) {
-        this.usuarioMedicamentos = usuarioMedicamentos;
+    public void setPrescricoes(List<Prescricao> prescricoes) {
+        this.prescricoes = prescricoes;
     }
 
     @Override

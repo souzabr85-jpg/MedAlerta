@@ -2,7 +2,6 @@ package br.uninter.medalerta.app;
 
 import br.uninter.medalerta.model.*;
 import br.uninter.medalerta.service.MedicamentoService;
-import br.uninter.medalerta.service.UsuarioMedicamentoService;
 import br.uninter.medalerta.service.UsuarioService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -17,16 +16,13 @@ public class App implements CommandLineRunner {
 
     private final UsuarioService usuarioService;
     private final MedicamentoService medicamentoService;
-    private final UsuarioMedicamentoService usuarioMedicamentoService;
 
     public App(
             UsuarioService usuarioService,
-            MedicamentoService medicamentoService,
-            UsuarioMedicamentoService usuarioMedicamentoService
+            MedicamentoService medicamentoService
     ) {
         this.usuarioService = usuarioService;
         this.medicamentoService = medicamentoService;
-        this.usuarioMedicamentoService = usuarioMedicamentoService;
     }
 
     @Override
@@ -42,7 +38,6 @@ public class App implements CommandLineRunner {
                 switch (opcao) {
                     case 1 -> menuUsuario(sc);
                     case 2 -> menuMedicamento(sc);
-                    case 3 -> menuUsuarioMedicamento(sc);
                     case 0 -> System.out.println("Encerrando aplicação...");
                     default -> System.out.println("Opção inválida.");
                 }
@@ -59,7 +54,6 @@ public class App implements CommandLineRunner {
         System.out.println("\n===== MEDALERTA - MENU PRINCIPAL =====");
         System.out.println("1 - CRUD Usuário");
         System.out.println("2 - CRUD Medicamento");
-        System.out.println("3 - CRUD UsuárioMedicamento");
         System.out.println("0 - Sair");
     }
 
@@ -221,126 +215,6 @@ public class App implements CommandLineRunner {
         System.out.println("Medicamento removido com sucesso.");
     }
 
-    private void menuUsuarioMedicamento(Scanner sc) {
-        int opcao;
-        do {
-            System.out.println("\n--- CRUD USUÁRIO_MEDICAMENTO ---");
-            System.out.println("1 - Vincular Medicamento a usuário");
-            System.out.println("2 - Listar todos os vínculos");
-            System.out.println("3 - Buscar vínculo por chave composta");
-            System.out.println("4 - Listar vínculos por usuário");
-            System.out.println("5 - Atualizar vínculo");
-            System.out.println("6 - Remover vínculo");
-            System.out.println("0 - Voltar");
-
-            opcao = lerInteiro(sc, "Escolha uma opção: ");
-
-            switch (opcao) {
-                case 1 -> vincularUsuarioMedicamento(sc);
-                case 2 -> listarTodosVinculos();
-                case 3 -> buscarVinculoPorId(sc);
-                case 4 -> listarVinculosPorUsuario(sc);
-                case 5 -> atualizarVinculo(sc);
-                case 6 -> removerVinculo(sc);
-                case 0 -> System.out.println("Voltando...");
-                default -> System.out.println("Opção inválida.");
-            }
-        } while (opcao != 0);
-    }
-
-    private void vincularUsuarioMedicamento(Scanner sc) {
-        Integer idUsuario = lerInteiro(sc, "ID do usuário: ");
-        Integer idMedicamento = lerInteiro(sc, "ID do Medicamento: ");
-        LocalTime horarioUso = LocalTime.parse(lerTexto(sc, "Horário de uso (HH:mm:ss): "));
-        String frequenciaUso = lerTextoOpcional(sc, "Frequência de uso (vazio para null): ");
-        String dosagem = lerTexto(sc, "Dosagem: ");
-        LocalDateTime dataHorarioAlerta = LocalDateTime.parse(lerTexto(sc, "Data/hora alerta (yyyy-MM-ddTHH:mm:ss): "));
-        StatusAlerta statusAlerta = lerStatusAlerta(sc);
-
-        String consumoTexto = lerTextoOpcional(sc, "Data/hora consumo (yyyy-MM-ddTHH:mm:ss ou vazio): ");
-        LocalDateTime dataHorarioConsumo = consumoTexto == null ? null : LocalDateTime.parse(consumoTexto);
-
-        ConfirmacaoConsumo confirmacaoConsumo = lerConfirmacaoConsumo(sc);
-
-        UsuarioMedicamento salvo = usuarioMedicamentoService.vincular(
-                idUsuario,
-                idMedicamento,
-                horarioUso,
-                frequenciaUso,
-                dosagem,
-                dataHorarioAlerta,
-                statusAlerta,
-                dataHorarioConsumo,
-                confirmacaoConsumo
-        );
-
-        System.out.println("Vínculo criado com sucesso: " + salvo);
-    }
-
-    private void listarTodosVinculos() {
-        List<UsuarioMedicamento> lista = usuarioMedicamentoService.listarTodos();
-        if (lista.isEmpty()) {
-            System.out.println("Nenhum vínculo encontrado.");
-            return;
-        }
-        lista.forEach(System.out::println);
-    }
-
-    private void buscarVinculoPorId(Scanner sc) {
-        Integer idUsuario = lerInteiro(sc, "ID do usuário: ");
-        Integer idMedicamento = lerInteiro(sc, "ID do Medicamento: ");
-
-        UsuarioMedicamento vinculo = usuarioMedicamentoService.buscarPorId(idUsuario, idMedicamento);
-        System.out.println(vinculo);
-    }
-
-    private void listarVinculosPorUsuario(Scanner sc) {
-        Integer idUsuario = lerInteiro(sc, "ID do usuário: ");
-        List<UsuarioMedicamento> lista = usuarioMedicamentoService.listarPorUsuario(idUsuario);
-
-        if (lista.isEmpty()) {
-            System.out.println("Nenhum vínculo encontrado para esse usuário.");
-            return;
-        }
-
-        lista.forEach(System.out::println);
-    }
-
-    private void atualizarVinculo(Scanner sc) {
-        Integer idUsuario = lerInteiro(sc, "ID do usuário: ");
-        Integer idMedicamento = lerInteiro(sc, "ID do Medicamento: ");
-        LocalTime horarioUso = LocalTime.parse(lerTexto(sc, "Novo horário de uso (HH:mm:ss): "));
-        String frequenciaUso = lerTextoOpcional(sc, "Nova frequência de uso (vazio para null): ");
-        String dosagem = lerTexto(sc, "Nova dosagem: ");
-        LocalDateTime dataHorarioAlerta = LocalDateTime.parse(lerTexto(sc, "Nova data/hora alerta (yyyy-MM-ddTHH:mm:ss): "));
-        StatusAlerta statusAlerta = lerStatusAlerta(sc);
-
-        String consumoTexto = lerTextoOpcional(sc, "Nova data/hora consumo (yyyy-MM-ddTHH:mm:ss ou vazio): ");
-        LocalDateTime dataHorarioConsumo = consumoTexto == null ? null : LocalDateTime.parse(consumoTexto);
-
-        ConfirmacaoConsumo confirmacaoConsumo = lerConfirmacaoConsumo(sc);
-
-        UsuarioMedicamento atualizado = usuarioMedicamentoService.atualizar(
-                idUsuario,
-                idMedicamento,
-                horarioUso,
-                frequenciaUso,
-                dosagem,
-                dataHorarioAlerta,
-                statusAlerta,
-                dataHorarioConsumo,
-                confirmacaoConsumo
-        );
-
-        System.out.println("Vínculo atualizado com sucesso: " + atualizado);
-    }
-
-    private void removerVinculo(Scanner sc) {
-        Integer idUsuario = lerInteiro(sc, "ID do usuário: ");
-        Integer idMedicamento = lerInteiro(sc, "ID do Medicamento: ");
-        usuarioMedicamentoService.remover(idUsuario, idMedicamento);
-        System.out.println("Vínculo removido com sucesso.");
-    }
 
     private Integer lerInteiro(Scanner sc, String mensagem) {
         while (true) {
@@ -384,36 +258,36 @@ public class App implements CommandLineRunner {
 
     private QuantidadeTipo lerQuantidadeTipo(Scanner sc) {
         while (true) {
-            System.out.print("Quantidade [unidade/ml]: ");
-            String valor = sc.nextLine().trim();
+            System.out.print("Quantidade [UNIDADE/ML]: ");
+            String valor = sc.nextLine().trim().toUpperCase();
             try {
                 return QuantidadeTipo.valueOf(valor);
             } catch (Exception e) {
-                System.out.println("Valor inválido. Use: unidade ou ml.");
+                System.out.println("Valor inválido. Use: UNIDADE ou ML.");
             }
         }
     }
 
     private StatusAlerta lerStatusAlerta(Scanner sc) {
         while (true) {
-            System.out.print("Status alerta [emitido/nao_emitido]: ");
-            String valor = sc.nextLine().trim();
+            System.out.print("Status alerta [EMITIDO/PENDENTE/CONFIRMADO]: ");
+            String valor = sc.nextLine().trim().toUpperCase();
             try {
                 return StatusAlerta.valueOf(valor);
             } catch (Exception e) {
-                System.out.println("Valor inválido. Use: emitido ou nao_emitido.");
+                System.out.println("Valor inválido. Use: EMITIDO, PENDENTE ou CONFIRMADO.");
             }
         }
     }
 
     private ConfirmacaoConsumo lerConfirmacaoConsumo(Scanner sc) {
         while (true) {
-            System.out.print("Confirmação consumo [sim/nao]: ");
-            String valor = sc.nextLine().trim();
+            System.out.print("Confirmação consumo [SIM/NAO]: ");
+            String valor = sc.nextLine().trim().toUpperCase();
             try {
                 return ConfirmacaoConsumo.valueOf(valor);
             } catch (Exception e) {
-                System.out.println("Valor inválido. Use: sim ou nao.");
+                System.out.println("Valor inválido. Use: SIM ou NAO.");
             }
         }
     }
