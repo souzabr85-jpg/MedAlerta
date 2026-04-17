@@ -1,8 +1,7 @@
 package br.uninter.medalerta.app;
 
 import br.uninter.medalerta.model.*;
-import br.uninter.medalerta.service.MedicamentoService;
-import br.uninter.medalerta.service.UsuarioService;
+import br.uninter.medalerta.service.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -16,13 +15,28 @@ public class App implements CommandLineRunner {
 
     private final UsuarioService usuarioService;
     private final MedicamentoService medicamentoService;
+    private final PrescricaoService prescricaoService;
+    private final HorarioMedicamentoService horarioMedicamentoService;
+    private final AlertaService alertaService;
+    private final EstoqueMedicamentoService estoqueMedicamentoService;
+    private final CuidadorService cuidadorService;
 
     public App(
             UsuarioService usuarioService,
-            MedicamentoService medicamentoService
+            MedicamentoService medicamentoService,
+            PrescricaoService prescricaoService,
+            HorarioMedicamentoService horarioMedicamentoService,
+            AlertaService alertaService,
+            EstoqueMedicamentoService estoqueMedicamentoService,
+            CuidadorService cuidadorService
     ) {
         this.usuarioService = usuarioService;
         this.medicamentoService = medicamentoService;
+        this.prescricaoService = prescricaoService;
+        this.horarioMedicamentoService = horarioMedicamentoService;
+        this.alertaService = alertaService;
+        this.estoqueMedicamentoService = estoqueMedicamentoService;
+        this.cuidadorService = cuidadorService;
     }
 
     @Override
@@ -38,6 +52,11 @@ public class App implements CommandLineRunner {
                 switch (opcao) {
                     case 1 -> menuUsuario(sc);
                     case 2 -> menuMedicamento(sc);
+                    case 3 -> menuPrescricao(sc);
+                    case 4 -> menuHorarioMedicamento(sc);
+                    case 5 -> menuAlerta(sc);
+                    case 6 -> menuEstoqueMedicamento(sc);
+                    case 7 -> menuCuidador(sc);
                     case 0 -> System.out.println("Encerrando aplicação...");
                     default -> System.out.println("Opção inválida.");
                 }
@@ -54,6 +73,11 @@ public class App implements CommandLineRunner {
         System.out.println("\n===== MEDALERTA - MENU PRINCIPAL =====");
         System.out.println("1 - CRUD Usuário");
         System.out.println("2 - CRUD Medicamento");
+        System.out.println("3 - CRUD Prescrição");
+        System.out.println("4 - CRUD Horário Medicamento");
+        System.out.println("5 - CRUD Alerta");
+        System.out.println("6 - CRUD Estoque Medicamento");
+        System.out.println("7 - CRUD Cuidador");
         System.out.println("0 - Sair");
     }
 
@@ -290,5 +314,188 @@ public class App implements CommandLineRunner {
                 System.out.println("Valor inválido. Use: SIM ou NAO.");
             }
         }
+    }
+
+    private FrequenciaTipo lerFrequenciaTipo(Scanner sc) {
+        while (true) {
+            System.out.print("Frequência [HORAS/DIAS/SEMANAS/DOSE_UNICA]: ");
+            String valor = sc.nextLine().trim().toUpperCase();
+            try {
+                return FrequenciaTipo.valueOf(valor);
+            } catch (Exception e) {
+                System.out.println("Valor inválido. Use: HORAS, DIAS, SEMANAS ou DOSE_UNICA.");
+            }
+        }
+    }
+
+    // Métodos do menu Prescrição
+    private void menuPrescricao(Scanner sc) {
+        int opcao;
+        do {
+            System.out.println("\n--- CRUD PRESCRIÇÃO ---");
+            System.out.println("1 - Cadastrar");
+            System.out.println("2 - Listar");
+            System.out.println("3 - Buscar por ID");
+            System.out.println("4 - Atualizar");
+            System.out.println("5 - Remover");
+            System.out.println("0 - Voltar");
+
+            opcao = lerInteiro(sc, "Escolha uma opção: ");
+
+            switch (opcao) {
+                case 1 -> cadastrarPrescricao(sc);
+                case 2 -> listarPrescricoes();
+                case 3 -> buscarPrescricaoPorId(sc);
+                case 4 -> atualizarPrescricao(sc);
+                case 5 -> removerPrescricao(sc);
+                case 0 -> System.out.println("Voltando...");
+                default -> System.out.println("Opção inválida.");
+            }
+        } while (opcao != 0);
+    }
+
+    private void cadastrarPrescricao(Scanner sc) {
+        Prescricao p = new Prescricao();
+
+        System.out.println("\nCadastro de Prescrição");
+        Integer idUsuario = lerInteiro(sc, "ID do Usuário: ");
+        Integer idMedicamento = lerInteiro(sc, "ID do Medicamento: ");
+        
+        p.setUsuario(usuarioService.buscarPorId(idUsuario));
+        p.setMedicamento(medicamentoService.buscarPorId(idMedicamento));
+        p.setDosagemValor(lerInteiro(sc, "Valor da dosagem: "));
+        p.setDosagemUnidade(lerTexto(sc, "Unidade da dosagem: "));
+        p.setFrequenciaUso(lerInteiroOpcional(sc, "Frequência de uso (vazio para null): "));
+        p.setFrequenciaTipo(lerFrequenciaTipo(sc));
+
+        Prescricao salvo = prescricaoService.salvar(p);
+        System.out.println("Prescrição cadastrada com sucesso: " + salvo);
+    }
+
+    private void listarPrescricoes() {
+        List<Prescricao> lista = prescricaoService.listarTodos();
+        if (lista.isEmpty()) {
+            System.out.println("Nenhuma prescrição encontrada.");
+            return;
+        }
+        lista.forEach(System.out::println);
+    }
+
+    private void buscarPrescricaoPorId(Scanner sc) {
+        Integer id = lerInteiro(sc, "ID da prescrição: ");
+        Prescricao prescricao = prescricaoService.buscarPorId(id);
+        System.out.println(prescricao);
+    }
+
+    private void atualizarPrescricao(Scanner sc) {
+        Integer id = lerInteiro(sc, "ID da prescrição a atualizar: ");
+        Prescricao existente = prescricaoService.buscarPorId(id);
+        
+        existente.setDosagemValor(lerInteiro(sc, "Novo valor da dosagem: "));
+        existente.setDosagemUnidade(lerTexto(sc, "Nova unidade da dosagem: "));
+        existente.setFrequenciaUso(lerInteiroOpcional(sc, "Nova frequência de uso (vazio para null): "));
+        existente.setFrequenciaTipo(lerFrequenciaTipo(sc));
+
+        Prescricao atualizado = prescricaoService.atualizar(id, existente);
+        System.out.println("Prescrição atualizada: " + atualizado);
+    }
+
+    private void removerPrescricao(Scanner sc) {
+        Integer id = lerInteiro(sc, "ID da prescrição a remover: ");
+        prescricaoService.deletar(id);
+        System.out.println("Prescrição removida com sucesso.");
+    }
+
+    // Métodos do menu Estoque Medicamento
+    private void menuEstoqueMedicamento(Scanner sc) {
+        int opcao;
+        do {
+            System.out.println("\n--- CRUD ESTOQUE MEDICAMENTO ---");
+            System.out.println("1 - Criar estoque inicial");
+            System.out.println("2 - Listar todos");
+            System.out.println("3 - Buscar por prescrição");
+            System.out.println("4 - Diminuir quantidade");
+            System.out.println("5 - Adicionar quantidade");
+            System.out.println("6 - Verificar disponibilidade");
+            System.out.println("0 - Voltar");
+
+            opcao = lerInteiro(sc, "Escolha uma opção: ");
+
+            switch (opcao) {
+                case 1 -> criarEstoqueInicial(sc);
+                case 2 -> listarEstoques();
+                case 3 -> buscarEstoquePorPrescricao(sc);
+                case 4 -> diminuirEstoque(sc);
+                case 5 -> adicionarEstoque(sc);
+                case 6 -> verificarDisponibilidade(sc);
+                case 0 -> System.out.println("Voltando...");
+                default -> System.out.println("Opção inválida.");
+            }
+        } while (opcao != 0);
+    }
+
+    private void criarEstoqueInicial(Scanner sc) {
+        System.out.println("\nCriar Estoque Inicial");
+        Integer idPrescricao = lerInteiro(sc, "ID da prescrição: ");
+        Integer quantidadeTotal = lerInteiro(sc, "Quantidade total: ");
+        
+        Prescricao prescricao = prescricaoService.buscarPorId(idPrescricao);
+        EstoqueMedicamento estoque = estoqueMedicamentoService.criarEstoqueInicial(prescricao, quantidadeTotal);
+        System.out.println("Estoque criado com sucesso: " + estoque);
+    }
+
+    private void listarEstoques() {
+        List<EstoqueMedicamento> lista = estoqueMedicamentoService.listarTodos();
+        if (lista.isEmpty()) {
+            System.out.println("Nenhum estoque encontrado.");
+            return;
+        }
+        lista.forEach(System.out::println);
+    }
+
+    private void buscarEstoquePorPrescricao(Scanner sc) {
+        Integer idPrescricao = lerInteiro(sc, "ID da prescrição: ");
+        EstoqueMedicamento estoque = estoqueMedicamentoService.buscarPorPrescricaoId(idPrescricao);
+        System.out.println(estoque);
+    }
+
+    private void diminuirEstoque(Scanner sc) {
+        Integer idPrescricao = lerInteiro(sc, "ID da prescrição: ");
+        Integer quantidade = lerInteiro(sc, "Quantidade a diminuir: ");
+        
+        EstoqueMedicamento estoque = estoqueMedicamentoService.diminuirQuantidade(idPrescricao, quantidade);
+        System.out.println("Estoque atualizado: " + estoque);
+    }
+
+    private void adicionarEstoque(Scanner sc) {
+        Integer idPrescricao = lerInteiro(sc, "ID da prescrição: ");
+        Integer quantidade = lerInteiro(sc, "Quantidade a adicionar: ");
+        
+        EstoqueMedicamento estoque = estoqueMedicamentoService.adicionarQuantidade(idPrescricao, quantidade);
+        System.out.println("Estoque atualizado: " + estoque);
+    }
+
+    private void verificarDisponibilidade(Scanner sc) {
+        Integer idPrescricao = lerInteiro(sc, "ID da prescrição: ");
+        Integer quantidade = lerInteiro(sc, "Quantidade desejada: ");
+        
+        boolean disponivel = estoqueMedicamentoService.verificarDisponibilidade(idPrescricao, quantidade);
+        System.out.println(disponivel ? "Quantidade disponível" : "Quantidade insuficiente");
+    }
+
+    // Métodos simplificados para outros menus
+    private void menuHorarioMedicamento(Scanner sc) {
+        System.out.println("\n--- CRUD HORÁRIO MEDICAMENTO ---");
+        System.out.println("Funcionalidade em desenvolvimento.");
+    }
+
+    private void menuAlerta(Scanner sc) {
+        System.out.println("\n--- CRUD ALERTA ---");
+        System.out.println("Funcionalidade em desenvolvimento.");
+    }
+
+    private void menuCuidador(Scanner sc) {
+        System.out.println("\n--- CRUD CUIDADOR ---");
+        System.out.println("Funcionalidade em desenvolvimento.");
     }
 }
