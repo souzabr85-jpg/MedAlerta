@@ -28,23 +28,7 @@ create table Medicamento (
     primary key (idMedicamento)
 );
 
-create table UsuarioMedicamento (
-    idUsuarioMedicamento int auto_increment not null,
-	idUsuario int not null,
-	idMedicamento int not null,
-    horarioUso time not null,
-    frequenciaUso varchar(50),
-    dosagem varchar(50) not null,
-    dataHorarioAlerta datetime not null,
-    statusAlerta enum('emitido', 'não emitido') not null,
-    dataHorarioConsumo datetime,
-    confirmacaoConsumo enum('sim', 'não') not null,
-    primary key (idUsuarioMedicamento),
-    foreign key (idUsuario) references Usuario (idUsuario),
-    foreign key (idMedicamento) references Medicamento (idMedicamento)
-);
-
-create table HorarioMedicamento (
+/*create table HorarioMedicamento (
 	idHorarioMedicamento int auto_increment not null,
 	idUsuarioMedicamento int not null,
 	horario time not null,
@@ -52,17 +36,7 @@ create table HorarioMedicamento (
 	frequenciaUnidade enum('horas', 'dias', 'semanas', 'meses') not null,
 	primary key (idHorarioMedicamento),
 	foreign key (idUsuarioMedicamento) references UsuarioMedicamento(idUsuarioMedicamento)
-);
-
-create table Medicamento (
-	idMedicamento int auto_increment not null,
-    nomeComercial varchar(100) not null,
-    nomeGenerico varchar(100),
-    quantidade enum('unidade', 'ml'),
-    formaUso varchar(100),
-    observacao varchar(200),
-    primary key (idMedicamento)
-);
+);*/
 
 CREATE TABLE Prescricao (
     idPrescricao INT AUTO_INCREMENT NOT NULL,
@@ -78,13 +52,13 @@ CREATE TABLE Prescricao (
     FOREIGN KEY (idMedicamento) REFERENCES Medicamento(idMedicamento)
 );
 
-#create table HorarioMedicamento (
-#    idHorarioMedicamento int auto_increment not null,
-#    idPrescricao int not null,
-#    horario time not null,
-#    primary key (idHorarioMedicamento),
-#    foreign key (idPrescricao) references Prescricao(idPrescricao)
-#);
+create table HorarioMedicamento (
+    idHorarioMedicamento int auto_increment not null,
+    idPrescricao int not null,
+    horario time not null,
+    primary key (idHorarioMedicamento),
+    foreign key (idPrescricao) references Prescricao(idPrescricao)
+);
 
 CREATE TABLE Alerta(
 	idAlerta INT auto_increment NOT NULL,

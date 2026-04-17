@@ -12,18 +12,11 @@ public class HorarioMedicamento {
     @Column(name = "idHorarioMedicamento", nullable = false)
     private Integer idHorarioMedicamento;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId("idUsuarioMedicamento")
-    @JoinColumn(name = "idUsuarioMedicamento")
-    private Integer idUsuarioMedicamento;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @MapsId("idPrescricao")
+    @JoinColumn(name = "idPrescricao")
+    private Integer idPrescricao;
 
     @Column(name = "horario")
     private LocalTime horario;
-
-    @Column(name = "frequenciaValor")
-    private Integer frequenciaValor;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "frequenciaUnidade")
-    private FrequenciaUnidade frequenciaUnidade;
 }
